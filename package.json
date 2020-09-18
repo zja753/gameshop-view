@@ -13,6 +13,7 @@
     "scrollreveal": "^4.0.7",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vuescroll": "^4.16.1",
     "vuex": "^3.4.0"
   },
   "devDependencies": {

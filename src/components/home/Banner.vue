@@ -29,9 +29,7 @@ export default {
 
 <style lang="scss" scoped>
 .block {
-  // border: 1px solid red;
   height: 500px;
-  padding: 10px 0;
 }
 .img {
   width: 100%;

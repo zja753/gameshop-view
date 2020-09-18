@@ -2,9 +2,17 @@
   <div class="header">
     <div class="logo">小杉果</div>
     <div class="nav">
-      <li v-for="(item,index) in navList" :key="index">
-        {{item.title}}
-        <i v-if="index==1" class="el-icon-arrow-down"></i>
+      <li v-for="(item,index) in navList" :key="index" :class="{hasmenu:item.list.length>0}">
+        <span>
+          <router-link :to="item.url">
+            {{item.title}}
+            <i v-if="index==1" class="el-icon-arrow-down"></i>
+          </router-link>
+        </span>
+
+        <ul class="menu" v-if="item.list.length>0">
+          <li v-for="(x,i) in item.list" :key="i">{{x}}</li>
+        </ul>
       </li>
     </div>
     <div class="search">
@@ -12,9 +20,13 @@
       <el-button icon="el-icon-search" size="small"></el-button>
     </div>
     <div class="user">
-      <span class="login">登录</span>
+      <span class="login">
+        <router-link to="/login">登录</router-link>
+      </span>
       <span>|</span>
-      <span class="register">注册</span>
+      <span class="register">
+        <router-link to="/register">注册</router-link>
+      </span>
     </div>
   </div>
 </template>
@@ -25,13 +37,28 @@ export default {
   data() {
     return {
       navList: [
-        { title: "首页", list: [] },
-        { title: "游戏", list: ["1", "2", "3", "4", "5", "6"] },
-        { title: "社区", list: [] },
-        { title: "周边", list: [] },
-        { title: "头条", list: [] },
-        { title: "客户端", list: [] },
-        { title: "国际站", list: [] },
+        { title: "首页", list: [], url: "/" },
+        {
+          title: "游戏",
+          list: [
+            "促销游戏",
+            "试玩游戏",
+            "预售游戏",
+            "动作",
+            "射击",
+            "策略",
+            "角色扮演",
+            "模拟",
+            "独立",
+            "查看所有游戏",
+          ],
+          url: "/gamelist",
+        },
+        { title: "社区", list: [], url: "/gamelist" },
+        { title: "周边", list: [], url: "/gamelist" },
+        { title: "头条", list: [], url: "/gamelist" },
+        { title: "客户端", list: [], url: "/gamelist" },
+        { title: "国际站", list: [], url: "/gamelist" },
       ],
       input: "",
     };
@@ -41,9 +68,11 @@ export default {
 
 <style lang="scss" scoped>
 .header {
+  position: fixed;
+  z-index: 1000;
   background: #292e41;
+  width: 100%;
   height: 80px;
-  min-width: 1200px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
   display: flex;
   justify-content: space-between;
@@ -54,18 +83,48 @@ export default {
   }
   .nav {
     display: flex;
-    li {
-      list-style: none;
-      margin-right: 50px;
-      cursor: pointer;
-      color: rgba($color: #fff, $alpha: 0.6);
-      transition: 0.6s;
-      i {
-        position: relative;
-        right: 5px;
+    height: 100%;
+    .hasmenu {
+      position: relative;
+      height: 100%;
+      &:hover .menu {
+        display: block;
       }
-      &:hover {
+    }
+    li {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      padding: 0 25px;
+      a {
+        color: rgba($color: #fff, $alpha: 0.6);
+        transition: 0.6s;
+      }
+      a:hover {
         color: rgba($color: #fff, $alpha: 1);
+      }
+      .menu {
+        position: absolute;
+        color: rgba($color: #fff, $alpha: 0.6);
+        border: 1px solid rgba($color: #fff, $alpha: 0.5);
+        border-radius: 5px;
+        background: #292e41;
+        top: 80px;
+        z-index: 100;
+        width: 200px;
+        transform: translateX(-50px);
+        display: none;
+        &:hover {
+          display: block;
+        }
+        li {
+          padding: 10px 10px;
+          width: 100%;
+          cursor: pointer;
+          &:hover {
+            background: rgba($color: #ddd, $alpha: 0.1);
+          }
+        }
       }
     }
   }
@@ -78,17 +137,17 @@ export default {
     }
   }
   .user {
-    color: rgba($color: #fff, $alpha: 0.6);
-    transition: 0.6s;
-    margin-right: 80px;
-    span {
-      margin-right: 10px;
-    }
-    span:not(:nth-child(2)) {
-      cursor: pointer;
+    a {
+      color: rgba($color: #fff, $alpha: 0.6);
+      transition: 0.6s;
       &:hover {
         color: rgba($color: #fff, $alpha: 1);
       }
+    }
+    margin-right: 80px;
+    span {
+      color: rgba($color: #fff, $alpha: 0.6);
+      margin: 0 10px;
     }
   }
 }
