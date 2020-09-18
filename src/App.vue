@@ -20,4 +20,7 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
+#app {
+  min-width: 1200px;
+}
 </style>
