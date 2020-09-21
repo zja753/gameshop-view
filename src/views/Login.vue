@@ -3,13 +3,13 @@
     <div class="card">
       <h2>用户登录</h2>
       <div class="row">
-        <input type="text" placeholder="邮箱" />
+        <input type="text" v-model="params.email" placeholder="邮箱" />
       </div>
       <div class="row">
-        <input type="password" placeholder="密码" />
+        <input type="password" v-model="params.password" placeholder="密码" />
       </div>
       <div class="row">
-        <button>登录</button>
+        <button @click="handleLogin">登录</button>
       </div>
       <div class="row">
         <div>
@@ -32,28 +32,6 @@
                 <img :src="item" alt class="svg-icon" />
               </a>
             </li>
-
-            <!-- <li></li>
-            <li>
-              <a href>
-                <img :src="bili" alt class="svg-icon" />
-              </a>
-            </li>
-            <li>
-              <a href>
-                <img :src="bili" alt class="svg-icon" />
-              </a>
-            </li>
-            <li>
-              <a href>
-                <img :src="bili" alt class="svg-icon" />
-              </a>
-            </li>
-            <li>
-              <a href>
-                <img :src="bili" alt class="svg-icon" />
-              </a>
-            </li>-->
           </ul>
         </div>
       </div>
@@ -66,6 +44,7 @@ export default {
   name: "Login",
   data() {
     return {
+      params: { email: "", password: "" },
       note: {
         backgroundImage: "url(" + require("@/assets/img/p1.jpg") + ")",
         backgroundRepeat: "no-repeat",
@@ -80,6 +59,24 @@ export default {
         require("@/assets/img/github.svg"),
       ],
     };
+  },
+  methods: {
+    handleLogin() {
+      this.$axios.post("/user/login", this.params).then((res) => {
+        if (res.status == 1) {
+          console.log(res);
+          res.data.Authorization = res.data.token;
+          res.data.account = res.data.email;
+          this.$store.commit("changeLogin", res.data);
+          this.$router.push("/");
+        } else {
+          this.$message({
+            message: res.err,
+            type: "warning",
+          });
+        }
+      });
+    },
   },
 };
 </script>

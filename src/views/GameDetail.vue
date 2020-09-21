@@ -1,15 +1,15 @@
 <template>
   <div class="gamelist">
     <main>
-      <h2>原子农场</h2>
-      <h3>Atomicrops</h3>
+      <h2>{{gameInfo.name}}</h2>
+      <h3>{{gameInfo.name_en}}</h3>
       <div class="content">
         <div class="left">
-          <GameImg />
-          <GameIntroduction />
+          <GameImg v-if="gameInfo" :gameImg="gameInfo.detailImgs" />
+          <GameIntroduction v-if="gameInfo" :gameInfo="gameInfo" />
         </div>
         <div class="right">
-          <GameInfo />
+          <GameInfo v-if="gameInfo" :gameInfo="gameInfo" />
         </div>
       </div>
     </main>
@@ -24,12 +24,28 @@ import GameIntroduction from "@/components/gamedetail/GameIntroduction";
 export default {
   name: "GameDetail",
   data() {
-    return {};
+    return {
+      gameInfo: "",
+    };
   },
   components: {
     GameImg,
     GameInfo,
     GameIntroduction,
+  },
+  created() {
+    this.getGameInfo();
+  },
+  mounted() {},
+  methods: {
+    getGameInfo() {
+      this.$axios
+        .get("/getProductInfo", { _id: this.$route.params.id })
+        .then((res) => {
+          // console.log(res);
+          this.gameInfo = res.data;
+        });
+    },
   },
 };
 </script>

@@ -16,6 +16,18 @@
         <div class="tips"></div>
       </div>
       <div class="row">
+        <span>昵称</span>
+        <input
+          type="text"
+          v-model="nickname"
+          @focus="handleFocus"
+          @blur="handleBlur"
+          placeholder="请输入昵称"
+          alt="昵称"
+        />
+        <div class="tips"></div>
+      </div>
+      <div class="row">
         <span>邮箱验证码</span>
         <input type="text" placeholder="请输入邮箱验证码" />
         <button>获取邮箱验证码</button>
@@ -72,6 +84,7 @@ export default {
       email: "",
       password: "",
       repass: "",
+      nickname: "",
     };
   },
   watch: {
@@ -87,6 +100,10 @@ export default {
       let msg = "<i class='el-icon-warning'></i>请再次输入密码";
       this.repassCheck(msg);
     },
+    nickname() {
+      let msg = "<i class='el-icon-warning'></i>请输入昵称";
+      this.nameCheck(msg);
+    },
   },
   methods: {
     handleFocus(event) {
@@ -95,7 +112,10 @@ export default {
         msg = "<i class='el-icon-warning'></i>请输入正确的邮箱";
         this.emailCheck(msg);
       }
-
+      if (event.target.alt == "昵称") {
+        msg = "<i class='el-icon-warning'></i>请输入昵称";
+        this.nameCheck(msg);
+      }
       if (event.target.alt == "密码") {
         msg = "<i class='el-icon-warning'></i>8-20位的数字、字母或符号";
         this.passCheck(msg);
@@ -117,9 +137,17 @@ export default {
           d1.classList.add("error");
         }
       }
-
+      if (event.target.alt == "昵称") {
+        d1 = document.getElementsByClassName("tips")[1];
+        let res = this.nameCheck();
+        if (res) d1.innerHTML = "";
+        else {
+          d1.innerHTML = "<i class='el-icon-error'></i>请输入昵称";
+          d1.classList.add("error");
+        }
+      }
       if (event.target.alt == "密码") {
-        d1 = document.getElementsByClassName("tips")[2];
+        d1 = document.getElementsByClassName("tips")[3];
         let res = this.passCheck();
         if (res) d1.innerHTML = "";
         else {
@@ -131,7 +159,7 @@ export default {
 
       if (event.target.alt == "密码确认") {
         let res = this.repassCheck();
-        d1 = document.getElementsByClassName("tips")[3];
+        d1 = document.getElementsByClassName("tips")[4];
         if (res) d1.innerHTML = "";
         else {
           d1.classList.add("error");
@@ -141,13 +169,29 @@ export default {
     },
     handleRegister() {
       if (!this.emailCheck()) {
+        let d1 = document.getElementsByClassName("tips")[0];
+        d1.innerHTML = "<i class='el-icon-error'></i>请输入正确的邮箱";
+        d1.classList.add("error");
         this.$message({
           message: "邮箱不正确!!!",
           type: "warning",
         });
         return;
       }
+      if (!this.nameCheck()) {
+        let d1 = document.getElementsByClassName("tips")[1];
+        d1.innerHTML = "<i class='el-icon-error'></i>请输入昵称";
+        d1.classList.add("error");
+        this.$message({
+          message: "昵称为空!!!",
+          type: "warning",
+        });
+        return;
+      }
       if (!this.passCheck()) {
+        let d1 = document.getElementsByClassName("tips")[3];
+        d1.innerHTML = "<i class='el-icon-error'></i>8-20位的数字、字母或符号";
+        d1.classList.add("error");
         this.$message({
           message: "请输入8-20位的密码!!!",
           type: "warning",
@@ -155,6 +199,9 @@ export default {
         return;
       }
       if (!this.repassCheck()) {
+        let d1 = document.getElementsByClassName("tips")[4];
+        d1.classList.add("error");
+        d1.innerHTML = "<i class='el-icon-error'></i>两次密码不一致";
         this.$message({
           message: "两次密码不一致!!!",
           type: "warning",
@@ -169,8 +216,34 @@ export default {
         });
         return;
       }
+      this.$axios
+        .post("/user/register", {
+          password: this.password,
+          email: this.email,
+          nickName: this.nickname,
+          role: "user",
+        })
+        .then((res) => {
+          // console.log(res);
+          this.password = "";
+          this.repass = "";
+          if (res.status == 0) {
+            this.$message({
+              message: res.err,
+              type: "warning",
+            });
+          } else {
+            this.$message({
+              message: "注册成功，正在前往登陆页面！！！",
+              type: "success",
+            });
+            setTimeout(() => {
+              this.$router.push("/login");
+            }, 1000);
+          }
+        });
     },
-    emailCheck(msg) {
+    emailCheck(msg = "") {
       let reg = /^([a-zA-Z]|[0-9])(\w)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
       let d1 = document.getElementsByClassName("tips")[0];
       d1.classList.remove("error");
@@ -183,8 +256,20 @@ export default {
         return false;
       }
     },
-    passCheck(msg) {
-      let d1 = document.getElementsByClassName("tips")[2];
+    nameCheck(msg = "") {
+      let d1 = document.getElementsByClassName("tips")[1];
+      d1.classList.remove("error");
+      if (this.nickname.trim().length !== 0) {
+        d1.innerHTML = "";
+        d1.classList.remove("error");
+        return true;
+      } else {
+        d1.innerHTML = msg;
+        return false;
+      }
+    },
+    passCheck(msg = "") {
+      let d1 = document.getElementsByClassName("tips")[3];
       d1.classList.remove("error");
       if (this.password.length < 8 || this.password.length > 20) {
         d1.innerHTML = msg;
@@ -195,8 +280,8 @@ export default {
         return true;
       }
     },
-    repassCheck(msg) {
-      let d1 = document.getElementsByClassName("tips")[3];
+    repassCheck(msg = "") {
+      let d1 = document.getElementsByClassName("tips")[4];
       d1.classList.remove("error");
       if (this.password === this.repass && this.repass !== "") {
         d1.innerHTML = "";
@@ -213,7 +298,7 @@ export default {
 
 <style lang="scss" scoped>
 .register {
-  padding-bottom: 50px;
+  padding: 50px 0;
   span {
     color: #adc1f4;
     font-size: 20px;
@@ -268,12 +353,12 @@ export default {
       height: 50px;
       display: flex;
       align-items: center;
-      &:nth-of-type(2) {
+      &:nth-of-type(3) {
         button {
           width: 200px;
         }
       }
-      &:nth-of-type(5) {
+      &:nth-of-type(6) {
         input {
           width: 15px;
           height: 15px;
@@ -286,7 +371,7 @@ export default {
           }
         }
       }
-      &:nth-of-type(6) {
+      &:nth-of-type(7) {
         button {
           width: 100%;
         }

@@ -14,25 +14,25 @@
       </header>
       <div class="content">
         <main>
-          <div class="card" v-for="(item,index) in productList" :key="item+index">
-            <img
-              src="https://s1-rc.sonkwo.com/medium/910135728720663/file/57947/sonkwo-top-L-Bless-Unleashed.jpg?imageView2/2/w/170/h/100"
-              alt
-            />
+          <div
+            class="card"
+            v-for="(item,index) in gameList"
+            :key="item+index"
+            @click="enterDetail(item._id)"
+          >
+            <img :src="item.thumbnail" alt />
             <div class="info">
               <div class="title">
-                神佑 压力测试版
+                {{item.name}}
                 <span class="badge_ys">预售</span>
                 <span class="badge_gjz">国际站</span>
               </div>
               <div class="detial">
-                发行于 2020-07-28
-                <span>￥163.00</span>
+                发行于 {{item.sale_date}}
+                <span>￥{{item.price}}</span>
               </div>
               <div class="iconGroup">
-                <span>多人</span>
-                <span>角色扮演</span>
-                <span>动作</span>
+                <span v-for="(item,index) in item.tagList.slice(0,3)" :key="index+item">{{item}}</span>
               </div>
             </div>
           </div>
@@ -51,12 +51,22 @@
           </div>
         </aside>
       </div>
+      <div class="pagination" v-if="pageCount">
+        <el-pagination
+          :pager-count="pagerCount"
+          layout="prev, pager, next"
+          :page-size="20"
+          :total="pageCount"
+          @current-change="handleCurrentChange"
+        ></el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  name: "GameList",
   data() {
     return {
       search: { region: [] },
@@ -69,7 +79,46 @@ export default {
         "按价格",
         "按类别",
       ],
+      gameList: [],
+      pageCount: "",
+      currentPage: 1,
+      pagerCount: 5,
+      loadDone: true,
     };
+  },
+  watch: {
+    $route(to) {
+      // console.log();
+      this.getGameList(to.query.page - 1);
+    },
+  },
+  created() {
+    this.getGameList(this.$route.query.page - 1);
+  },
+  mounted() {},
+  methods: {
+    getGameList(page = 0) {
+      this.$axios.get("/getProduct", { limit: 20, page: page }).then((res) => {
+        console.log(res);
+        this.gameList = res.data;
+        for (let i of this.gameList) {
+          let date = new Date(parseInt(i.create_time));
+          i.sale_date =
+            date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+        }
+        this.pageCount = res.count;
+      });
+    },
+    enterDetail(id) {
+      this.$router.push("/game/" + id);
+    },
+    handleCurrentChange(val) {
+      // 改变默认的页数
+      this.currentPage = val;
+      // console.log(val);
+      this.$router.push("/gamelist?page=" + val);
+      this.getGameList(val - 1);
+    },
   },
 };
 </script>
@@ -129,7 +178,10 @@ export default {
           &:hover {
             background-color: rgba(51, 57, 77, 0.5);
           }
-
+          img {
+            object-fit: cover;
+            height: 100px;
+          }
           .info {
             margin-left: 20px;
             flex: 1;

@@ -2,15 +2,15 @@
   <div class="gameimg">
     <div class="main">
       <div class="left">
-        <img :src="imgList[currentIndex].url" alt />
+        <img :src="gameImg[currentIndex]" alt />
       </div>
       <div class="right">
         <vue-scroll :ops="ops" style="width:100%;height:100%">
           <img
             @click="imgClick(index)"
-            v-for="(item,index) in imgList"
+            v-for="(item,index) in gameImg"
             :key="index"
-            :src="item.url"
+            :src="item"
             :class="{actice:index==currentIndex}"
             alt
           />
@@ -22,16 +22,24 @@
 <script>
 export default {
   name: "GameImg",
+  props: {
+    gameImg: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
   data() {
     return {
-      imgList: [
-        { id: 0, url: require("@/assets/img/p1.jpg") },
-        { id: 1, url: require("@/assets/img/p2.jpg") },
-        { id: 2, url: require("@/assets/img/p3.jpg") },
-        { id: 3, url: require("@/assets/img/p4.jpg") },
-        { id: 4, url: require("@/assets/img/p5.jpg") },
-        { id: 5, url: require("@/assets/img/p6.jpg") },
-      ],
+      // imgList: [
+      //   { id: 0, url: require("@/assets/img/p1.jpg") },
+      //   { id: 1, url: require("@/assets/img/p2.jpg") },
+      //   { id: 2, url: require("@/assets/img/p3.jpg") },
+      //   { id: 3, url: require("@/assets/img/p4.jpg") },
+      //   { id: 4, url: require("@/assets/img/p5.jpg") },
+      //   { id: 5, url: require("@/assets/img/p6.jpg") },
+      // ],
       currentIndex: 0,
       ops: {
         vuescroll: {},
@@ -49,6 +57,8 @@ export default {
       },
     };
   },
+  created() {},
+  mounted() {},
   methods: {
     imgClick(index) {
       this.currentIndex = index;

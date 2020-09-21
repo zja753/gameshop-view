@@ -1,21 +1,15 @@
 <template>
   <div class="gameinfo">
     <div class="info">
-      <p>
-        《丧尸围城3》的故事发生在前作的10年后，一场全国范围的丧尸瘟疫已经波及到这里……故事也跟随我们的主角——年轻的修理工人Nick Ramos逐渐展开
-        丧尸围城3》的故事发生在前作的10年后，一场全国范围的丧尸瘟疫已经波及到这里……故事也跟随我们的主角——年轻的修理工人Nick Ramos逐渐展开
-        丧尸围城3》的故事发生在前作的10年后，一场全国范围的丧尸瘟疫已经波及到这里……故事也跟随我们的主角——年轻的修理工人Nick Ramos逐渐展开
-        v丧尸围城3》的故事发生在前作的10年后，一场全国范围的丧尸瘟疫已经波及到这里……故事也跟随我们的主角——年轻的修理工人Nick Ramos逐渐展开
-        丧尸围城3》的故事发生在前作的10年后，一场全国范围的丧尸瘟疫已经波及到这里……故事也跟随我们的主角——年轻的修理工人Nick Ramos逐渐展开
-      </p>
+      <p>{{gameInfo.brief_introduction}}</p>
       <span v-for="(item,index) in tagList" :key="index">{{item}}</span>
     </div>
 
     <div class="bottom">
       <div class="price">
-        <span>￥35.00</span>
-        <span>￥50.00</span>
-        <span>
+        <span>￥{{gameInfo.discount}}</span>
+        <span v-if="gameInfo.discount!==gameInfo.price">￥{{gameInfo.price}}</span>
+        <span v-if="gameInfo.discount!==gameInfo.price">
           -30%
           <i class="el-icon-sort-down"></i>
         </span>
@@ -42,12 +36,24 @@ export default {
   name: "GameInfo",
   data() {
     return {
-      tagList: ["动作", "角色扮演", "第三人称", "恐怖", "搞笑"],
+      tagList: [],
       heart: [
         require("@/assets/img/爱心2.svg"),
         require("@/assets/img/爱心.svg"),
       ],
     };
+  },
+  props: {
+    gameInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+  created() {},
+  mounted() {
+    this.tagList = this.gameInfo.tagList.slice(0, 5);
   },
 };
 </script>
