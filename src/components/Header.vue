@@ -32,11 +32,14 @@
         <router-link to="/login">登录</router-link>
       </span>
       <span>|</span>
-      <span class="register">
-        <router-link to="/register">注册</router-link>
-      </span>
+      <span class="register"> </span>
     </div>
-    <div class="user" v-else>欢迎您！ {{ userEmail }}</div>
+    <div class="user" v-else>
+      <router-link to="/userInfo">欢迎您！ {{ userEmail }}</router-link>
+      <router-link to="/cart" class="cart">
+        <i class="el-icon-shopping-cart-1"></i>购物车
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -167,6 +170,9 @@ export default {
     span {
       color: rgba($color: #fff, $alpha: 0.6);
       margin: 0 10px;
+    }
+    .cart {
+      margin-left: 10px;
     }
   }
 }

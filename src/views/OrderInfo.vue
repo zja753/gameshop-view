@@ -20,7 +20,13 @@
         游戏总数:{{ this.order && this.order.quantity }} 总价格:{{
           this.order && this.order.totle_price
         }}元
-        <el-button class="buyBtn" type="success" round @click="payOrder">
+        <el-button
+          class="buyBtn"
+          type="success"
+          round
+          @click="payOrder"
+          v-if="order && +order.status === 1"
+        >
           支付订单
         </el-button>
       </div>
@@ -33,16 +39,7 @@ export default {
   name: "OrderInfo",
   data() {
     return {
-      tableData: [
-        {
-          group_name: "中土世界™",
-          name: "中土世界™ : 战争之影™ 决定版",
-          brief_introduction:
-            "包含 6 件物品： Middle-earth™: Shadow of War™, Middle-earth™: Shadow of War™ Story Expansion Pass, Outlaw Tribe Nemesis Expansion, Slaughter Tribe Nemesis Expansion, The Blade of Galadriel Story Expansion, The Desolation of Mordor Story Expansion",
-          price: "163.0",
-          is_dlc: false,
-        },
-      ],
+      tableData: [],
       order: null,
     };
   },

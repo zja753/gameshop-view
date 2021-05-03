@@ -23,6 +23,12 @@ const routes = [{
 }, {
   path: "/orderInfo/:id",
   component: () => import('@/views/OrderInfo')
+}, {
+  path: "/userInfo",
+  component: () => import('@/views/UserInfo')
+}, {
+  path: "/cart",
+  component: () => import('@/views/Cart')
 }]
 
 const router = new VueRouter({
