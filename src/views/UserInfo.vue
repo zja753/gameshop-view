@@ -51,6 +51,9 @@
           </el-table>
         </el-form-item>
       </el-form>
+      <div class="log-out-btn-container">
+        <el-button type="danger" @click="logOut">退出登录</el-button>
+      </div>
     </main>
   </div>
 </template>
@@ -58,6 +61,7 @@
 <script>
 export default {
   name: "OrderInfo",
+  props: ["updateHeader"],
   data() {
     return {
       userInfo: null,
@@ -103,6 +107,13 @@ export default {
       const { _id } = data;
       this.$router.push(`orderInfo/${_id}`);
     },
+    logOut() {
+      localStorage.clear("user_id");
+      localStorage.clear("Authorization");
+      localStorage.clear("account");
+      this.updateHeader();
+      this.$router.push("/login");
+    },
   },
 };
 </script>
@@ -116,6 +127,11 @@ export default {
     min-height: calc(100vh - 184px);
     background-color: #fff;
     padding-top: 30px;
+
+    .log-out-btn-container {
+      text-align: center;
+      padding-bottom: 20px;
+    }
   }
 }
 </style>

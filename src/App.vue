@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Header />
+    <Header :key="update" />
     <div class="ctx"></div>
-    <router-view class="content" />
+    <router-view class="content" :updateHeader="updateHeader" />
   </div>
 </template>
 
@@ -12,6 +12,16 @@ import Header from "@/components/Header";
 export default {
   name: "App",
   components: { Header },
+  data() {
+    return {
+      update: 1,
+    };
+  },
+  methods: {
+    updateHeader() {
+      this.update += 1;
+    },
+  },
 };
 </script>
 

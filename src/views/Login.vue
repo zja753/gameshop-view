@@ -27,7 +27,7 @@
         <h3>第三方登录</h3>
         <div class="icons">
           <ul>
-            <li v-for="(item,index) in iconList" :key="index">
+            <li v-for="(item, index) in iconList" :key="index">
               <a href>
                 <img :src="item" alt class="svg-icon" />
               </a>
@@ -42,6 +42,7 @@
 <script>
 export default {
   name: "Login",
+  props: ["updateHeader"],
   data() {
     return {
       params: { email: "", password: "" },
@@ -68,6 +69,7 @@ export default {
           res.data.Authorization = res.data.token;
           res.data.account = res.data.email;
           this.$store.commit("changeLogin", res.data);
+          this.updateHeader();
           this.$router.push("/");
         } else {
           this.$message({

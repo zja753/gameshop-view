@@ -32,7 +32,7 @@
         <router-link to="/login">登录</router-link>
       </span>
       <span>|</span>
-      <span class="register"> </span>
+      <span class="register"><router-link to="/register">注册</router-link></span>
     </div>
     <div class="user" v-else>
       <router-link to="/userInfo">欢迎您！ {{ userEmail }}</router-link>
