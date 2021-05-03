@@ -78,6 +78,7 @@ export default {
         })
         .then((res) => {
           console.log(res);
+          this.$router.push(`/orderInfo/${res.data._id}`);
         });
     },
   },
