@@ -20,7 +20,7 @@
         <div>
           <span>忘记密码</span>
           <span>|</span>
-          <span>注册</span>
+          <span><router-link to="/register">注册</router-link></span>
         </div>
       </div>
       <div class="bottom">

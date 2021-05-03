@@ -1,30 +1,33 @@
 <template>
   <div class="gameinfo">
     <div class="info">
-      <p>{{gameInfo.brief_introduction}}</p>
-      <span v-for="(item,index) in tagList" :key="index">{{item}}</span>
+      <p>{{ gameInfo.brief_introduction }}</p>
+      <span v-for="(item, index) in tagList" :key="index">{{ item }}</span>
     </div>
 
     <div class="bottom">
       <div class="price">
-        <span>￥{{gameInfo.discount}}</span>
-        <span v-if="gameInfo.discount!==gameInfo.price">￥{{gameInfo.price}}</span>
-        <span v-if="gameInfo.discount!==gameInfo.price">
+        <span>￥{{ gameInfo.discount }}</span>
+        <span v-if="gameInfo.discount !== gameInfo.price">
+          ￥{{ gameInfo.price }}
+        </span>
+        <span v-if="gameInfo.discount !== gameInfo.price">
           -30%
           <i class="el-icon-sort-down"></i>
         </span>
       </div>
       <div class="btn">
-        <button class="add">
+        <button class="add" @click="addCart">
           <i class="el-icon-s-shop"></i>加入购物车
         </button>
-        <button class="buy">立即购买</button>
+        <button class="buy" @click="buy">立即购买</button>
       </div>
       <div class="wish">
         <span>
           <i>
             <img :src="heart[0]" alt />
-          </i> 加入心愿单
+          </i>
+          加入心愿单
         </span>
       </div>
     </div>
@@ -54,6 +57,29 @@ export default {
   created() {},
   mounted() {
     this.tagList = this.gameInfo.tagList.slice(0, 5);
+  },
+  methods: {
+    addCart() {
+      // console.log(this.gameInfo._id,localStorage.getItem('user_id'));
+      this.$axios
+        .post("/cart/add", {
+          product_id: this.gameInfo._id,
+          user_id: localStorage.getItem("user_id"),
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    },
+    buy() {
+      this.$axios
+        .post("/order/create", {
+          orderItemList: [{ product_id: this.gameInfo._id, quantity: 1 }],
+          user_id: localStorage.getItem("user_id"),
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    },
   },
 };
 </script>

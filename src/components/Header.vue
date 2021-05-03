@@ -2,24 +2,32 @@
   <div class="header">
     <div class="logo">小杉果</div>
     <div class="nav">
-      <li v-for="(item,index) in navList" :key="index" :class="{hasmenu:item.list.length>0}">
+      <li
+        v-for="(item, index) in navList"
+        :key="index"
+        :class="{ hasmenu: item.list.length > 0 }"
+      >
         <span>
           <router-link :to="item.url">
-            {{item.title}}
-            <i v-if="index==1" class="el-icon-arrow-down"></i>
+            {{ item.title }}
+            <i v-if="index == 1" class="el-icon-arrow-down"></i>
           </router-link>
         </span>
 
-        <ul class="menu" v-if="item.list.length>0">
-          <li v-for="(x,i) in item.list" :key="i">{{x}}</li>
+        <ul class="menu" v-if="item.list.length > 0">
+          <li v-for="(x, i) in item.list" :key="i">{{ x }}</li>
         </ul>
       </li>
     </div>
     <div class="search">
-      <el-input v-model="input" placeholder="请输入关键词" size="small"></el-input>
+      <el-input
+        v-model="input"
+        placeholder="请输入关键词"
+        size="small"
+      ></el-input>
       <el-button icon="el-icon-search" size="small"></el-button>
     </div>
-    <div class="user">
+    <div class="user" v-if="!userEmail || userEmail.length === 0">
       <span class="login">
         <router-link to="/login">登录</router-link>
       </span>
@@ -28,6 +36,7 @@
         <router-link to="/register">注册</router-link>
       </span>
     </div>
+    <div class="user" v-else>欢迎您！ {{ userEmail }}</div>
   </div>
 </template>
 
@@ -61,8 +70,13 @@ export default {
         { title: "国际站", list: [], url: "/gamelist" },
       ],
       input: "",
+      userEmail: null,
     };
   },
+  mounted() {
+    this.userEmail = localStorage.getItem("account") || "";
+  },
+  methods: {},
 };
 </script>
 
@@ -81,6 +95,8 @@ export default {
   .logo {
     font-size: 20px;
     margin-right: 50px;
+    margin-left: 30px;
+    color: #ddd;
   }
   .nav {
     display: flex;
@@ -138,6 +154,8 @@ export default {
     }
   }
   .user {
+    color: #ddd;
+    cursor: pointer;
     a {
       color: rgba($color: #fff, $alpha: 0.6);
       transition: 0.6s;

@@ -69,12 +69,12 @@ export default {
       display: flex;
       justify-content: space-between;
       .left {
-        border: 1px solid red;
+        // border: 1px solid red;
         width: 830px;
       }
       .right {
         width: 350px;
-        border: 1px solid red;
+        // border: 1px solid red;
       }
     }
   }

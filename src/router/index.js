@@ -20,6 +20,9 @@ const routes = [{
 }, {
   path: "/game/:id",
   component: () => import('@/views/GameDetail')
+}, {
+  path: "/orderInfo/:id",
+  component: () => import('@/views/OrderInfo')
 }]
 
 const router = new VueRouter({
