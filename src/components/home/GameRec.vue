@@ -1,18 +1,23 @@
 <template>
   <div class="game">
-    <div class="item" v-for="item in 5" :key="item.id">
+    <div
+      class="item"
+      v-for="item in productList"
+      :key="item.id"
+      @click="toProductInfo(item._id)"
+    >
       <div class="img">
-        <img :src="imgUrl" alt />
+        <img :src="item.thumbnail" alt />
       </div>
       <div class="text">
-        <h2>游戏名</h2>
+        <h2>{{ item.name }}</h2>
         <div class="bottom">
           <div class="discount">
             <span>-20%</span>
           </div>
           <div class="price">
-            <p>原价</p>
-            <p>现价</p>
+            <p>{{ item.price / 0.8 }}</p>
+            <p>{{ item.price }}</p>
           </div>
         </div>
       </div>
@@ -23,10 +28,17 @@
 <script>
 export default {
   name: "GameRec",
+  props: ["productList"],
   data() {
     return {
       imgUrl: require("@/assets/img/p1.jpg"),
     };
+  },
+  methods: {
+    toProductInfo(product_id) {
+      // console.log(product_id);
+      this.$router.push(`/game/${product_id}`);
+    },
   },
 };
 </script>
@@ -36,6 +48,7 @@ export default {
   margin: 20px 0;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   .item {
     width: 19.5%;
     border: 1px solid #32394c;
@@ -43,6 +56,7 @@ export default {
     border-radius: 5px;
     cursor: pointer;
     position: relative;
+    margin-bottom: 10px;
     // border: 1px solid red;
     img {
       width: 100%;

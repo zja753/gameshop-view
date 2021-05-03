@@ -2,9 +2,13 @@
   <div class="home">
     <Banner />
     <Recommend />
-    <div class="content" v-for="(item,index) in list" :key="index">
-      <p>{{item.title}}</p>
-      <GameRec />
+    <div class="content">
+      <p>为您推荐</p>
+      <GameRec :productList="recommendProductList" />
+    </div>
+    <div class="content">
+      <p>热门游戏</p>
+      <GameRec :productList="hotProductList" />
     </div>
     <div class="content">
       <p>热门小组</p>
@@ -15,13 +19,13 @@
         <div class="topbar">
           <span
             class="cate"
-            v-for="(item,index) in cateList"
+            v-for="(item, index) in cateList"
             :key="index"
-            :class="{active:currentIndex==index}"
+            :class="{ active: currentIndex == index }"
             @click="cateClick(index)"
           >
-            {{item}}
-            <span class="icon" v-if="index!=cateList.length-1">-</span>
+            {{ item }}
+            <span class="icon" v-if="index != cateList.length - 1">-</span>
           </span>
         </div>
         <Game class="game" />
@@ -30,13 +34,13 @@
         <div class="topbar">
           <span
             class="cate"
-            v-for="(item,index) in topList"
+            v-for="(item, index) in topList"
             :key="index"
-            :class="{active:currentIndex2==index}"
+            :class="{ active: currentIndex2 == index }"
             @click="topClick(index)"
           >
-            {{item}}
-            <span class="icon" v-if="index!=topList.length-1">-</span>
+            {{ item }}
+            <span class="icon" v-if="index != topList.length - 1">-</span>
           </span>
         </div>
         <TopGame />
@@ -66,15 +70,35 @@ export default {
       topList: ["周排行", "月排行"],
       currentIndex: 0,
       currentIndex2: 0,
+      recommendProductList: [],
+      hotProductList: [],
     };
   },
   components: { Banner, Recommend, GameRec, HotGroup, Game, TopGame },
+  created() {
+    this.fetchRecommendProductList();
+    this.fetchHotProductList();
+  },
   methods: {
     cateClick(index) {
       this.currentIndex = index;
     },
     topClick(index) {
       this.currentIndex2 = index;
+    },
+    fetchRecommendProductList() {
+      this.$axios
+        .get("product/recommend", { user_id: localStorage.getItem("user_id") })
+        .then((res) => {
+          const { data } = res;
+          this.recommendProductList = data;
+        });
+    },
+    fetchHotProductList() {
+      this.$axios.get("product/hot", {}).then((res) => {
+        const { data } = res;
+        this.hotProductList = data;
+      });
     },
   },
 };

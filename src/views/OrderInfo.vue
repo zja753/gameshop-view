@@ -65,6 +65,7 @@ export default {
             message: res.msg,
             type: "success",
           });
+          this.$router.push("/");
         } else {
           this.$message({
             message: res.err,

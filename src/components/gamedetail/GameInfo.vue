@@ -68,6 +68,18 @@ export default {
         })
         .then((res) => {
           console.log(res);
+          const { status, msg, err } = res;
+          if (status === 1) {
+            this.$message({
+              message: msg,
+              type: "success",
+            });
+          } else {
+            this.$message({
+              message: err,
+              type: "warning",
+            });
+          }
         });
     },
     buy() {
