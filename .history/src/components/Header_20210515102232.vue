@@ -15,9 +15,7 @@
         </span>
 
         <ul class="menu" v-if="item.list.length > 0">
-          <li v-for="(x, i) in item.list" :key="i" @click="toGameList(x)">
-            {{ x }}
-          </li>
+          <li v-for="(x, i) in item.list" :key="i">{{ x }}</li>
         </ul>
       </li>
     </div>
@@ -34,9 +32,7 @@
         <router-link to="/login">登录</router-link>
       </span>
       <span>|</span>
-      <span class="register"
-        ><router-link to="/register">注册</router-link></span
-      >
+      <span class="register"><router-link to="/register">注册</router-link></span>
     </div>
     <div class="user" v-else>
       <router-link to="/userInfo">欢迎您！ {{ userEmail }}</router-link>
@@ -49,43 +45,42 @@
 
 <script>
 export default {
-  name: 'Header',
+  name: "Header",
   data() {
     return {
       navList: [
-        { title: '首页', list: [], url: '/' },
+        { title: "首页", list: [], url: "/" },
         {
-          title: '游戏',
+          title: "游戏",
           list: [
-            '试玩游戏',
-            '动作',
-            '策略',
-            '模拟',
-            '独立',
-            '角色扮演',
-            '全部游戏',
+            "促销游戏",
+            "试玩游戏",
+            "预售游戏",
+            "动作",
+            "射击",
+            "策略",
+            "角色扮演",
+            "模拟",
+            "独立",
+            "查看所有游戏",
           ],
-          url: '/gamelist',
+          url: "/gamelist",
         },
-        // { title: '社区', list: [], url: '/gamelist' },
-        // { title: '周边', list: [], url: '/gamelist' },
-        // { title: '头条', list: [], url: '/gamelist' },
-        // { title: '客户端', list: [], url: '/gamelist' },
-        // { title: '国际站', list: [], url: '/gamelist' },
+        { title: "社区", list: [], url: "/gamelist" },
+        { title: "周边", list: [], url: "/gamelist" },
+        { title: "头条", list: [], url: "/gamelist" },
+        { title: "客户端", list: [], url: "/gamelist" },
+        { title: "国际站", list: [], url: "/gamelist" },
       ],
-      input: '',
+      input: "",
       userEmail: null,
-    }
+    };
   },
   mounted() {
-    this.userEmail = localStorage.getItem('account') || ''
+    this.userEmail = localStorage.getItem("account") || "";
   },
-  methods: {
-    toGameList(tag) {
-      this.$router.push(`/gamelist/${tag}`)
-    },
-  },
-}
+  methods: {},
+};
 </script>
 
 <style lang="scss" scoped>

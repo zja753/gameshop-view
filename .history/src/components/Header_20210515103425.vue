@@ -15,9 +15,7 @@
         </span>
 
         <ul class="menu" v-if="item.list.length > 0">
-          <li v-for="(x, i) in item.list" :key="i" @click="toGameList(x)">
-            {{ x }}
-          </li>
+          <li v-for="(x, i) in item.list" :key="i">{{ x }}</li>
         </ul>
       </li>
     </div>
@@ -57,13 +55,16 @@ export default {
         {
           title: '游戏',
           list: [
+            '促销游戏',
             '试玩游戏',
+            '预售游戏',
             '动作',
+            '射击',
             '策略',
+            '角色扮演',
             '模拟',
             '独立',
-            '角色扮演',
-            '全部游戏',
+            '查看所有游戏',
           ],
           url: '/gamelist',
         },
@@ -80,11 +81,7 @@ export default {
   mounted() {
     this.userEmail = localStorage.getItem('account') || ''
   },
-  methods: {
-    toGameList(tag) {
-      this.$router.push(`/gamelist/${tag}`)
-    },
-  },
+  methods: {},
 }
 </script>
 

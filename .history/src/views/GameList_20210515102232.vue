@@ -16,59 +16,37 @@
         <main>
           <div
             class="card"
-            v-for="(item, index) in gameList"
-            :key="item + index"
+            v-for="(item,index) in gameList"
+            :key="item+index"
             @click="enterDetail(item._id)"
           >
             <img :src="item.thumbnail" alt />
             <div class="info">
               <div class="title">
-                {{ item.name }}
+                {{item.name}}
                 <span class="badge_ys">预售</span>
                 <span class="badge_gjz">国际站</span>
               </div>
               <div class="detial">
-                发行于 {{ item.sale_date }}
-                <span>￥{{ item.price }}</span>
+                发行于 {{item.sale_date}}
+                <span>￥{{item.price}}</span>
               </div>
               <div class="iconGroup">
-                <span
-                  v-for="(item, index) in item.tagList.slice(0, 3)"
-                  :key="index + item"
-                  >{{ item }}</span
-                >
+                <span v-for="(item,index) in item.tagList.slice(0,3)" :key="index+item">{{item}}</span>
               </div>
             </div>
           </div>
         </main>
         <aside>
           <div class="searchCard" v-for="item in searchGroupList" :key="item">
-            <header>{{ item }}</header>
+            <header>{{item}}</header>
             <el-checkbox-group class="checkboxGroup" v-model="search.region">
-              <el-checkbox
-                class="checkboxGroupItem"
-                label="复选框 A"
-              ></el-checkbox>
-              <el-checkbox
-                class="checkboxGroupItem"
-                label="复选框 B"
-              ></el-checkbox>
-              <el-checkbox
-                class="checkboxGroupItem"
-                label="复选框 C"
-              ></el-checkbox>
-              <el-checkbox
-                class="checkboxGroupItem"
-                label="复选框 D"
-              ></el-checkbox>
-              <el-checkbox
-                class="checkboxGroupItem"
-                label="复选框 E"
-              ></el-checkbox>
-              <el-checkbox
-                class="checkboxGroupItem"
-                label="复选框 F"
-              ></el-checkbox>
+              <el-checkbox class="checkboxGroupItem" label="复选框 A"></el-checkbox>
+              <el-checkbox class="checkboxGroupItem" label="复选框 B"></el-checkbox>
+              <el-checkbox class="checkboxGroupItem" label="复选框 C"></el-checkbox>
+              <el-checkbox class="checkboxGroupItem" label="复选框 D"></el-checkbox>
+              <el-checkbox class="checkboxGroupItem" label="复选框 E"></el-checkbox>
+              <el-checkbox class="checkboxGroupItem" label="复选框 F"></el-checkbox>
             </el-checkbox-group>
           </div>
         </aside>
@@ -88,72 +66,64 @@
 
 <script>
 export default {
-  name: 'GameList',
+  name: "GameList",
   data() {
     return {
       search: { region: [] },
       productList: [1, 2, 3, 4, 5, 6, 7, 8, 9],
       searchGroupList: [
-        '按地区',
-        '按类型',
-        '热门标签',
-        '按语言',
-        '按价格',
-        '按类别',
+        "按地区",
+        "按类型",
+        "热门标签",
+        "按语言",
+        "按价格",
+        "按类别",
       ],
       gameList: [],
-      pageCount: '',
+      pageCount: "",
       currentPage: 1,
       pagerCount: 5,
       loadDone: true,
-    }
+    };
   },
   watch: {
     $route(to) {
       // console.log();
-      this.getGameList(to.query.page - 1)
+      this.getGameList(to.query.page - 1);
     },
   },
   created() {
-    this.getGameList(this.$route.query.page - 1)
+    this.getGameList(this.$route.query.page - 1);
   },
   mounted() {},
   methods: {
-    getGameList() {
-      console.log('getGameList',this.tag)
-      this.$axios
-        .get('/product/fetch', { limit: 20, page: this.currentPage, tag: this.tag })
-        .then((res) => {
-          console.log(res)
-          this.gameList = res.data
-          for (let i of this.gameList) {
-            let date = new Date(parseInt(i.create_time))
-            i.sale_date =
-              date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()
-          }
-          this.pageCount = res.count
-        })
+    getGameList(page = 0) {
+      this.$axios.get("/getProduct", { limit: 20, page: page }).then((res) => {
+        console.log(res);
+        this.gameList = res.data;
+        for (let i of this.gameList) {
+          let date = new Date(parseInt(i.create_time));
+          i.sale_date =
+            date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+        }
+        this.pageCount = res.count;
+      });
     },
     enterDetail(id) {
-      this.$router.push('/game/' + id)
+      this.$router.push("/game/" + id);
     },
     handleCurrentChange(val) {
       // 改变默认的页数
-      this.currentPage = val
+      this.currentPage = val;
       // console.log(val);
-      this.$router.push('/gamelist?page=' + val)
-      this.getGameList(val - 1)
+      this.$router.push("/gamelist?page=" + val);
+      this.getGameList(val - 1);
     },
   },
-  computed: {
-    tag() {
-      return this.$route.params.tag || 'all'
-    },
-  },
-}
+};
 </script>
 
-<style lang="scss" scope>
+<style lang='scss' scope>
 .gameList {
   background-color: #202539;
   min-height: 100vh;

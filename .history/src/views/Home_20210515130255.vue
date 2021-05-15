@@ -10,11 +10,11 @@
       <p>热门游戏</p>
       <GameRec :productList="hotProductList" />
     </div>
-    <!-- <div class="content">
+    <div class="content">
       <p>热门小组</p>
       <HotGroup />
-    </div> -->
-    <!-- <div class="gamelist">
+    </div>
+    <div class="gamelist">
       <div class="list">
         <div class="topbar">
           <span
@@ -45,71 +45,69 @@
         </div>
         <TopGame />
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
-import Banner from '@/components/home/Banner'
-// import Recommend from "@/components/home/Recommend";
-import GameRec from '@/components/home/GameRec'
-// import HotGroup from '@/components/home/HotGroup'
-// import Game from '@/components/gamelist/Game'
-// import TopGame from '@/components/gamelist/TopGame'
+import Banner from "@/components/home/Banner";
+import Recommend from "@/components/home/Recommend";
+import GameRec from "@/components/home/GameRec";
+import HotGroup from "@/components/home/HotGroup";
+import Game from "@/components/gamelist/Game";
+import TopGame from "@/components/gamelist/TopGame";
 
 export default {
-  name: 'Home',
+  name: "Home",
   data() {
     return {
       list: [
-        { title: '【推荐】今日最超值', data: [{ name: '游戏名' }] },
-        { title: '【推荐】预售同样精彩', data: [{ name: '游戏名' }] },
-        { title: '【推荐】角色扮演推荐', data: [{ name: '游戏名' }] },
+        { title: "【推荐】今日最超值", data: [{ name: "游戏名" }] },
+        { title: "【推荐】预售同样精彩", data: [{ name: "游戏名" }] },
+        { title: "【推荐】角色扮演推荐", data: [{ name: "游戏名" }] },
       ],
-      cateList: ['最新', '促销', '预售'],
-      topList: ['周排行', '月排行'],
+      cateList: ["最新", "促销", "预售"],
+      topList: ["周排行", "月排行"],
       currentIndex: 0,
       currentIndex2: 0,
       recommendProductList: [],
       hotProductList: [],
-    }
+    };
   },
-  components: { Banner, GameRec },
+  components: { Banner, Recommend, GameRec, HotGroup, Game, TopGame },
   created() {
-    this.fetchRecommendProductList()
-    this.fetchHotProductList()
+    this.fetchRecommendProductList();
+    this.fetchHotProductList();
   },
   methods: {
     cateClick(index) {
-      this.currentIndex = index
+      this.currentIndex = index;
     },
     topClick(index) {
-      this.currentIndex2 = index
+      this.currentIndex2 = index;
     },
     fetchRecommendProductList() {
       this.$axios
-        .get('product/recommend', { user_id: localStorage.getItem('user_id') })
+        .get("product/recommend", { user_id: localStorage.getItem("user_id") })
         .then((res) => {
-          const { data } = res
-          this.recommendProductList = data
-        })
+          const { data } = res;
+          this.recommendProductList = data;
+        });
     },
     fetchHotProductList() {
-      this.$axios.get('product/hot', {}).then((res) => {
-        const { data } = res
-        this.hotProductList = data
-      })
+      this.$axios.get("product/hot", {}).then((res) => {
+        const { data } = res;
+        this.hotProductList = data;
+      });
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
 .home {
   background: #202539;
   min-width: 1200px;
-  overflow: auto;
-
   .content {
     width: 1200px;
     margin: auto;

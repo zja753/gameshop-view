@@ -108,8 +108,6 @@ export default {
 .home {
   background: #202539;
   min-width: 1200px;
-  overflow: auto;
-
   .content {
     width: 1200px;
     margin: auto;

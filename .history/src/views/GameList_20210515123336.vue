@@ -119,7 +119,7 @@ export default {
   },
   mounted() {},
   methods: {
-    getGameList() {
+    getGameList(page = 0) {
       console.log('getGameList',this.tag)
       this.$axios
         .get('/product/fetch', { limit: 20, page: this.currentPage, tag: this.tag })

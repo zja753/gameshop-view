@@ -10,11 +10,11 @@
       <p>热门游戏</p>
       <GameRec :productList="hotProductList" />
     </div>
-    <!-- <div class="content">
+    <div class="content">
       <p>热门小组</p>
       <HotGroup />
-    </div> -->
-    <!-- <div class="gamelist">
+    </div>
+    <div class="gamelist">
       <div class="list">
         <div class="topbar">
           <span
@@ -45,7 +45,7 @@
         </div>
         <TopGame />
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -53,9 +53,9 @@
 import Banner from '@/components/home/Banner'
 // import Recommend from "@/components/home/Recommend";
 import GameRec from '@/components/home/GameRec'
-// import HotGroup from '@/components/home/HotGroup'
-// import Game from '@/components/gamelist/Game'
-// import TopGame from '@/components/gamelist/TopGame'
+import HotGroup from '@/components/home/HotGroup'
+import Game from '@/components/gamelist/Game'
+import TopGame from '@/components/gamelist/TopGame'
 
 export default {
   name: 'Home',
@@ -74,7 +74,7 @@ export default {
       hotProductList: [],
     }
   },
-  components: { Banner, GameRec },
+  components: { Banner, GameRec, HotGroup, Game, TopGame },
   created() {
     this.fetchRecommendProductList()
     this.fetchHotProductList()
@@ -108,8 +108,6 @@ export default {
 .home {
   background: #202539;
   min-width: 1200px;
-  overflow: auto;
-
   .content {
     width: 1200px;
     margin: auto;

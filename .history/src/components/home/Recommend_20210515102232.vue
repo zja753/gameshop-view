@@ -4,13 +4,13 @@
       <div class="img">
         <img :src="imgUrl[0]" alt />
       </div>
-      <div class="title">推荐游戏</div>
+      <div class="title">降速经济全新体验到来</div>
     </div>
     <div class="item_anima">
       <div class="img">
         <img :src="imgUrl[1]" alt />
       </div>
-      <div class="title">推荐游戏</div>
+      <div class="title">降速经济全新体验到来</div>
     </div>
   </div>
 </template>

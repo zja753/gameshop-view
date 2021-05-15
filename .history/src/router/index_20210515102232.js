@@ -12,9 +12,6 @@ const routes = [{
   path: "/gamelist",
   component: () => import('@/views/GameList')
 }, {
-  path: "/gamelist/:tag",
-  component: () => import('@/views/GameList')
-}, {
   path: "/login",
   component: () => import('@/views/Login')
 }, {

@@ -106,6 +106,7 @@ export default {
       currentPage: 1,
       pagerCount: 5,
       loadDone: true,
+      tag: 'all',
     }
   },
   watch: {
@@ -115,14 +116,14 @@ export default {
     },
   },
   created() {
+    this.tag = this.$route.params.tag
     this.getGameList(this.$route.query.page - 1)
   },
   mounted() {},
   methods: {
-    getGameList() {
-      console.log('getGameList',this.tag)
+    getGameList(page = 0) {
       this.$axios
-        .get('/product/fetch', { limit: 20, page: this.currentPage, tag: this.tag })
+        .get('/getProduct', { limit: 20, page: page, tag: this.tag })
         .then((res) => {
           console.log(res)
           this.gameList = res.data
@@ -143,11 +144,6 @@ export default {
       // console.log(val);
       this.$router.push('/gamelist?page=' + val)
       this.getGameList(val - 1)
-    },
-  },
-  computed: {
-    tag() {
-      return this.$route.params.tag || 'all'
     },
   },
 }
