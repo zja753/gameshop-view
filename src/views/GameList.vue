@@ -75,6 +75,7 @@
       </div>
       <div class="pagination" v-if="pageCount">
         <el-pagination
+          :current-page="currentPage"
           :pager-count="pagerCount"
           layout="prev, pager, next"
           :page-size="20"
@@ -106,23 +107,28 @@ export default {
       currentPage: 1,
       pagerCount: 5,
       loadDone: true,
+      tag: null,
     }
   },
   watch: {
-    $route(to) {
-      // console.log();
-      this.getGameList(to.query.page - 1)
+    $route(val) {
+      this.tag = val.params.tag
+      this.getGameList(0)
     },
   },
   created() {
-    this.getGameList(this.$route.query.page - 1)
+    this.getGameList(0)
   },
   mounted() {},
   methods: {
-    getGameList() {
-      console.log('getGameList',this.tag)
+    getGameList(page) {
+      this.currentPage = page + 1
       this.$axios
-        .get('/product/fetch', { limit: 20, page: this.currentPage, tag: this.tag })
+        .get('/product/fetch', {
+          limit: 20,
+          page: page,
+          tag: this.tag,
+        })
         .then((res) => {
           console.log(res)
           this.gameList = res.data
@@ -138,16 +144,7 @@ export default {
       this.$router.push('/game/' + id)
     },
     handleCurrentChange(val) {
-      // 改变默认的页数
-      this.currentPage = val
-      // console.log(val);
-      this.$router.push('/gamelist?page=' + val)
       this.getGameList(val - 1)
-    },
-  },
-  computed: {
-    tag() {
-      return this.$route.params.tag || 'all'
     },
   },
 }
